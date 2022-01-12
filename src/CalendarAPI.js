@@ -4,14 +4,15 @@ export default class CalendarAPI {
 
 	#current_year;
 	#days_of_months;
+	#months;
 	#week_short_name;
 	#week_full_name;
 
-	constructor( anno ) {
+	constructor( anno = new Date().getFullYear() ) {
 		this.#current_year = anno;
 
 		this.#days_of_months = [ 31,
-								resolve_leap_year( anno ) ? 29 : 28,
+								this.resolve_leap_year( anno ) ? 29 : 28,
 								31,
 								30,
 								31,

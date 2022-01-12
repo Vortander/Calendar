@@ -21,6 +21,7 @@ for ( let m = 1; m <= 12; m++ ) {
 
 let calendario = new CalendarAPI();
 console.log( calendario.computus( 2022 ) );
+console.log( calendario.day_of_week( 12, 1 ) );
 
 
 

@@ -139,7 +139,6 @@ export default class CalendarAPI {
 	}
 
 	julian_days( day, month, year ) {
-
 		let c;
 
 		if ( month < 3 ) {
@@ -156,7 +155,6 @@ export default class CalendarAPI {
 		}
 
 		return ( 365.25 * ( year + 4716 ) + ( 30.6001 * ( month + 1 ) | 0 ) + day + c - 1524 ) | 0;
-
 	}
 
 	get_month_block( month ) {
@@ -178,16 +176,16 @@ export default class CalendarAPI {
 	}
 
 	get_month_HTML( month ) {
-
 		const month_name = document.createElement( 'h3' );
+		month_name.className = 'month-name';
 		month_name.innerText = this.#months[ month ][0];
 
 		const el_week = document.createElement( 'div' );
-		el_week.className = 'week';
+		el_week.className = 'week-header';
 		for ( const [ key, [ eng, por ] ] of Object.entries( this.#week_short_name ) ) {
 			const el_week_day = document.createElement( 'div' );
+			el_week_day.className = 'week-header-day';
 			el_week_day.innerText = eng;
-
 			el_week.append( el_week_day );
 		}
 
@@ -203,7 +201,7 @@ export default class CalendarAPI {
 			const el_day = document.createElement( 'div' );
 			el_day.className = 'day';
 			el_day.id = `day-${ ob_day.day_of_month }`;
-			el_day.innerText =  ob_day.day_of_month;
+			el_day.innerText = ob_day.day_of_month;
 
 			el_month.append( el_day );
 		}

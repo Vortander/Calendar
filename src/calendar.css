@@ -1,0 +1,29 @@
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.month {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin: 1.5em;
+}
+
+.day {
+  padding: .5em 0;
+  text-align: right;
+}
+
+.month-name {
+  grid-column: span 7;
+}
+
+.week-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-column: span 7;
+}
+
+.week-header-day {
+  text-align: right;
+}

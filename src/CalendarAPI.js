@@ -184,20 +184,26 @@ export default class CalendarAPI {
 
 		const el_week = document.createElement( 'div' );
 		el_week.className = 'week';
-		for ( const w of this.#week_short_name[ ]
+		for ( const [ key, [ eng, por ] ] of Object.entries( this.#week_short_name ) ) {
+			const el_week_day = document.createElement( 'div' );
+			el_week_day.innerText = eng;
+
+			el_week.append( el_week_day );
+		}
 
 		const el_month = document.createElement( 'div' );
 		el_month.className = 'month';
 		el_month.id = `month-${ month }`;
 
 		el_month.append( month_name );
+		el_month.append( el_week );
 
 		const month_block = this.get_month_block( month );
 		for ( const ob_day of month_block ) {
 			const el_day = document.createElement( 'div' );
 			el_day.className = 'day';
 			el_day.id = `day-${ ob_day.day_of_month }`;
-			el_day.innerText = this.#week_short_name[ ob_day.day_of_week ][0] + ' ' + ob_day.day_of_month;
+			el_day.innerText =  ob_day.day_of_month;
 
 			el_month.append( el_day );
 		}

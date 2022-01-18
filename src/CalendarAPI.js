@@ -7,22 +7,23 @@ export default class CalendarAPI {
 	#months;
 	#week_short_name;
 	#week_full_name;
+	#today;
 
 	constructor( anno = new Date().getFullYear() ) {
 		this.#current_year = anno;
 
-		this.#days_of_months = [ 31,
-								this.resolve_leap_year( anno ) ? 29 : 28,
-								31,
-								30,
-								31,
-								30,
-								31,
-								31,
-								30,
-								31,
-								30,
-								31 ];
+		this.#days_of_months = { 1: 31,
+								 2: this.resolve_leap_year( anno ) ? 29 : 28,
+								 3: 31,
+								 4: 30,
+								 5: 31,
+								 6: 30,
+								 7: 31,
+								 8: 31,
+								 9: 30,
+								10: 31,
+								11: 30,
+								12: 31 };
 
 		this.#months = { 1: [ 'January', 	'Janeiro' ],
 						 2: [ 'February', 	'Fevereiro' ],
@@ -53,6 +54,37 @@ export default class CalendarAPI {
 								 5: [ 'Fry', 'Sexta-feira' ],
 								 6: [ 'Sat', 'Sábado' ]  };
 
+		this.#today = new Date();
+
+	}
+
+	get today() {
+		return this.#today;
+	}
+
+	get current_day() {
+		return this.#today.getDate();
+	}
+
+	get current_month() {
+		return this.#today.getMonth() + 1;
+	}
+
+	get current_year() {
+		return this.#current_year;
+	}
+
+	get dow() {
+		const day_of_week = this.#today.getDay();
+		return {
+			short_name: this.#week_short_name[ day_of_week ],
+			full_name: this.#week_full_name[ day_of_week ],
+			index: day_of_week
+		}
+	}
+
+	get days_of_months() {
+		return this.#days_of_months;
 	}
 
 	computus( year = this.#current_year ) {
@@ -113,5 +145,23 @@ export default class CalendarAPI {
 
 		return ( 365.25 * ( year + 4716 ) + ( 30.6001 * ( month + 1 ) | 0 ) + day + c - 1524 ) | 0;
 
+	}
+
+	get_month_block( month, year = this.#current_year ) {
+		let month_block = [],
+			total_days = this.days_of_months[ month ];
+
+		for ( let d = 1; d <= total_days; d++ ) {
+			const ob_day = {
+				day_of_week: this.day_of_week( d, month, year ),
+				day_of_month: d,
+				month: month,
+				year: year
+			};
+
+			month_block.push( ob_day );
+		}
+
+		return month_block;
 	}
 }

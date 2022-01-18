@@ -43,16 +43,16 @@ export default class CalendarAPI {
 								 2: [ 'Tue', 'Ter' ],
 								 3: [ 'Wed', 'Qua' ],
 								 4: [ 'Thu', 'Qui' ],
-								 5: [ 'Fry', 'Sex' ],
+								 5: [ 'Fri', 'Sex' ],
 								 6: [ 'Sat', 'Sáb' ]  };
 
 		this.#week_full_name = { 0: [ 'Sunday', 'Domingo' ],
 								 1: [ 'Monday', 'Segunda-feira' ],
 								 2: [ 'Tuesday', 'Terça-feira' ],
 								 3: [ 'Wednesday', 'Quarta-feira' ],
-								 4: [ 'Thu', 'Quinta-feira' ],
-								 5: [ 'Fry', 'Sexta-feira' ],
-								 6: [ 'Sat', 'Sábado' ]  };
+								 4: [ 'Thursday', 'Quinta-feira' ],
+								 5: [ 'Friday', 'Sexta-feira' ],
+								 6: [ 'Saturday', 'Sábado' ]  };
 
 		this.#today = new Date();
 
@@ -85,6 +85,18 @@ export default class CalendarAPI {
 
 	get days_of_months() {
 		return this.#days_of_months;
+	}
+
+	get months() {
+		return this.#months;
+	}
+
+	get week_short_name() {
+		return this.#week_short_name;
+	}
+
+	get week_full_name() {
+		return this.#week_full_name;
 	}
 
 	computus( year = this.#current_year ) {
@@ -147,21 +159,49 @@ export default class CalendarAPI {
 
 	}
 
-	get_month_block( month, year = this.#current_year ) {
+	get_month_block( month ) {
 		let month_block = [],
 			total_days = this.days_of_months[ month ];
 
 		for ( let d = 1; d <= total_days; d++ ) {
 			const ob_day = {
-				day_of_week: this.day_of_week( d, month, year ),
+				day_of_week: this.day_of_week( d, month, this.#current_year ),
 				day_of_month: d,
 				month: month,
-				year: year
+				year: this.#current_year
 			};
 
 			month_block.push( ob_day );
 		}
 
 		return month_block;
+	}
+
+	get_month_HTML( month ) {
+
+		const month_name = document.createElement( 'h3' );
+		month_name.innerText = this.#months[ month ][0];
+
+		const el_week = document.createElement( 'div' );
+		el_week.className = 'week';
+		for ( const w of this.#week_short_name[ ]
+
+		const el_month = document.createElement( 'div' );
+		el_month.className = 'month';
+		el_month.id = `month-${ month }`;
+
+		el_month.append( month_name );
+
+		const month_block = this.get_month_block( month );
+		for ( const ob_day of month_block ) {
+			const el_day = document.createElement( 'div' );
+			el_day.className = 'day';
+			el_day.id = `day-${ ob_day.day_of_month }`;
+			el_day.innerText = this.#week_short_name[ ob_day.day_of_week ][0] + ' ' + ob_day.day_of_month;
+
+			el_month.append( el_day );
+		}
+
+		return el_month;
 	}
 }
